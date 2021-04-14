@@ -3,6 +3,8 @@ const app = express();
 const bodyParser = require("body-parser")
 const connection = require("./database/database")
 const askModel = require("./database/Ask")
+const answerModel = require("./database/Answer")
+
 
 //Database
 
@@ -44,7 +46,36 @@ app.post("/salvapergunta",(req,res) => {
     })
 
 })
+app.post("/answer",(req,res) =>{
+    var describe = req.body.ansuer
+    var ansuerId = req.body.ask
+    answerModel.create({
+        describe: describe,
+        askId: ansuerId
+    }).then(() =>{
+        res.redirect(`/question/${ansuerId}`)
+    })
 
+})
+app.get("/question/:id",(req,res) =>{
+    var id = req.params.id
+    askModel.findOne({
+        where: {id: id}
+    }).then(date =>{
+        if(date != undefined){
+            answerModel.findAll({
+                where:{askId: date.id}
+            }).then(response => {
+                res.render('ask',{
+                    ask:date,
+                    response: response
+                })           
+            })
+        }else{
+            res.redirect('/')
+        }
+    })
+})
 app.listen(8080,() => {
     console.log("App rodando")
 });

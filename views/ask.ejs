@@ -1,0 +1,32 @@
+<%- include ('./partials/header.ejs') %>
+
+<body>
+    <%- include ('./partials/navbar.ejs') %>
+    <div class="container">
+        <hr>
+        <h1><%= ask.title %></h1>
+        <p><%= ask.describe %></p>
+        <hr>
+        <form method="POST" action="/answer">
+            <h3>Ask</h3>
+            <label for="">Ansuer</label>
+            <textarea placeholder="Digite sua Resposta" name="ansuer" class="form-control"></textarea><br>
+            <input type="hidden" name="ask" value="<%= ask.id %>">
+            <button type="submit" class="btn btn-primary">Ansuer</button>
+        </form>
+        <hr>
+        <h3>Respostas</h3>
+        <hr>
+        <% response.forEach(date =>{%>
+            <div class="card">
+                <div class="card-body">
+                    <p><%= date.describe %></p>
+                </div>
+
+            </div>
+
+        <% }) %>
+    </div>
+</body>
+<%- include ('./partials/footer.ejs') %>
+
